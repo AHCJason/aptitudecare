@@ -26,13 +26,13 @@ class Activity extends Info {
 					WHERE a.location_id = :location_id 
 					AND 
 					(
-						act_s.date_start >= :start_date AND act_s.date_start <= :end_date
+						(act_s.date_start >= :start_date AND act_s.date_start <= :end_date)
 						OR 
-						act_s.repeat_week = :repeat_week AND act_s.repeat_weekday = :repeat_weekday AND act_s.date_start <= :start_date
+						(act_s.repeat_week = :repeat_week AND act_s.repeat_weekday = :repeat_weekday AND act_s.date_start <= :start_date)
 						OR 
-						act_s.repeat_week IS NULL AND act_s.repeat_weekday = :repeat_weekday AND act_s.date_start <= :start_date 
+						(act_s.repeat_week IS NULL AND act_s.repeat_weekday = :repeat_weekday AND act_s.date_start <= :start_date)
 						OR
-						act_s.daily = 1
+						(act_s.daily = 1 AND act_s.date_start <= :start_date)
 					)
 					ORDER BY act_s.time_start, act_s.date_start";
 

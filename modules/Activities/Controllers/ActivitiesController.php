@@ -78,7 +78,7 @@ class ActivitiesController extends MainPageController {
 				$activity = $this->loadModel('Activity', input()->id)->fetchSchedule();
 				//Split datetime to date AND time
 				$activity->date_start = $activity->date_start;
-				$activity->time_start = $activity->date_start;
+				$activity->time_start = $activity->time_start;
 			}
 		} else {
 			smarty()->assign('headerTitle', "Add a New Activity");
@@ -141,22 +141,28 @@ class ActivitiesController extends MainPageController {
 
 		if (input()->repeat_type != "") {
 			if (input()->repeat_type == "daily") {
-				$activity_schedule->daily = true;
+				$activity_schedule->daily = 1;
+				//be explicit, if daily not weekly
+				$activity_schedule->repeat_weekday = NULL;
 			}
 			if (input()->repeat_type == "weekly") {
-				$activity_schedule->daily = false;
+				$activity_schedule->daily = 0;
+				$activity_schedule->repeat_weekday = date("w", strtotime(input()->date_start));
 			}
 			if (input()->repeat_type == "monthly") {
 				//$activity_schedule->repeat_week = ceil(date("j", strtotime(input()->date_start)));
 				$activity_schedule->repeat_week = ceil(date("j", strtotime(input()->date_start))/7);
-				$activity_schedule->daily = false;
+				$activity_schedule->daily = 0;
 			}
 
-			$activity_schedule->repeat_weekday = date("w", strtotime(input()->date_start));
+			//$activity_schedule->repeat_weekday = date("w", strtotime(input()->date_start));
 		}
 		else{
 			//daily field cannot be null
-			$activity_schedule->daily = false;
+			$activity_schedule->daily = 0;
+			//be explicit, if no repeat clear all repeats
+			$activity_schedule->repeat_weekday = NULL;
+			$activity_schedule->repeat_week = NULL;
 		}
 		//Probably could refactor this to just have input()->allDay be the value
 		if (isset (input()->all_day)) {

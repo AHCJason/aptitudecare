@@ -113,15 +113,16 @@
 		</tr>
 		{elseif $activity->repeat_weekday != ""}
 		<tr>
-			<td colspan="4" class="text-center text-strong">This activity is scheduled to recur every {$activity->date_start|date_format: "%A"}{if $activity->time_start != ""} at {$activity->time_start|date_format: "%l:%M %p"}{/if}</td>
+			<td colspan="3" class="text-center text-strong">This activity is scheduled to recur every {$activity->date_start|date_format: "%A"}{if $activity->time_start != ""} at {$activity->time_start|date_format: "%l:%M %P"} / {$activity->time_start|date_format: "%k:%M"}{/if}</td>
 		</tr>
 		{elseif $activity->daily}
 		<tr>
-			<td>This is a daily recurring activity{if $activity->time_start != ""} at {$activity->time_start|date_format: "%l:%M %P"}{/if}</td>
+			<td colspan="3" class="text-center text-strong">This is a daily recurring activity starting on {$activity->date_start|date_format: '%D'}{if $activity->time_start != ""} at {$activity->time_start|date_format: "%l:%M %P"} / {$activity->time_start|date_format: "%k:%M"}{/if}</td>
 		</tr>
 		{/if}
-
-		{if $activity->repeat_week != "" OR $activity->repeat_weekday != "" OR $activity->daily}
+		
+		{* not done in save function so added always false clause *}
+		{if false AND ($activity->repeat_week != "" OR $activity->repeat_weekday != "" OR $activity->daily)}
 			<tr>
 				<td>&nbsp;</td>
 				<td><input type="checkbox" name="change_all" value="1" id="change-all" checked> Change all future occurances of this activity</td>
@@ -129,7 +130,7 @@
 		{/if}
 
 		<tr>
-			<td class="text-strong">Date:<input type="text" class="datepicker" name="date_start" value="{$activity->date_start|date_format: '%D'}" size="10"></td>
+			<td class="text-strong">Date:<input type="text" class="datepicker" name="date_start" value="{$activity->date_start|date_format: '%D'}" size="10" autocomplete="off"></td>
 			<td class="text-strong" id="all-day">All day?
 				{if $activity->all_day == 1}
 					<input type="checkbox" name="all_day" value="true" checked class="all-day-box"/>
@@ -137,7 +138,7 @@
 					<input type="checkbox" name="all_day" value="false" class="all-day-box"/>
 				{/if}
 			</td>
-			<td class="text-strong text-right" id="time">Time:<input type="text" class="timepicker" name="time_start" value="{$activity->time_start|date_format: '%H:%M'}" size="6"></td>
+			<td class="text-strong text-right" id="time">Time:<input type="text" class="timepicker" name="time_start" value="{$activity->time_start|date_format: '%H:%M'}" size="6" autocomplete="off"></td>
 		</tr>
 		<tr>
 			<td class="text-strong">Activity:</td>

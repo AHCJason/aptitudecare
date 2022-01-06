@@ -16,6 +16,11 @@
         <td colspan="2" class="text-green text-center text-18">Happy Birthday!</td>
       </tr>
       {/if}
+      {if $item->admitday}
+      <tr>
+        <td colspan="2" class="text-green text-center text-18">Welcome to our New Guest!</td>
+      </tr>
+      {/if}
       <tr>
         <td class="text-strong tc-label">Diet Order:</td>
         <td>{$item->diet_orders}{if $item->diet_info_other}, {$item->diet_info_other}{/if}</td>

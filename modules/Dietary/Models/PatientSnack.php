@@ -51,7 +51,7 @@ class PatientSnack extends Dietary {
     return false;
   }
 
-  public function fetchByLocation($location, $date) {
+  public function fetchByLocation($location, $date="") {
 //    $adapt_equip = $this->loadTable("AdaptEquip");
 //    $schedule = $this->loadTable("Schedule");
 //    $room = $this->loadTable("Room");

@@ -111,7 +111,12 @@ class AdmissionsController extends HomeHealthController {
 		// 	Set patient status as pending for new admits
 		$schedule->status = "Under Consideration";
 
-		$schedule->referred_by_location_id = input()->referred_by_location_id;
+		if (input()->referred_by_location_id != "")
+		{
+			$schedule->referred_by_location_id = input()->referred_by_location_id;
+		} else {
+			$schedule->referred_by_location_id = NULL;
+		}
 
 		if (input()->referred_by_individual_id != "") {
 			$schedule->referred_by_individual_id = input()->referred_by_individual_id;
@@ -157,7 +162,7 @@ class AdmissionsController extends HomeHealthController {
 
 
 		//	If the patient's status is approved they are a current patient
-		if ($prevSchedule->status == "Approved") {
+		if ($prevSchedule->status == "Approved" && strtotime($prevSchedule->datetime_discharge) >= strtotime("now")) {
 			$error_messages[] = "{$patient->first_name} {$patient->last_name} was already admitted on " . display_date($prevSchedule->referral_date);
 		} 
 		//	If patient is a pending admit in the future then throw an error
@@ -176,11 +181,12 @@ class AdmissionsController extends HomeHealthController {
 				$schedule->referred_by_type = "healthcare_facility";
 			} else {
 				$schedule->referred_by_type = "physician";
+				
 			}
 
-			$schedule->referred_by_individual_id = input()->referred_by_individual_id;
+			//$schedule->referred_by_individual_id = input()->referred_by_individual_id;
 			
-			$schedule->referred_by_individual_id = input()->referred_by_individual_id;
+			//$schedule->referred_by_individual_id = input()->referred_by_individual_id;
 			
 
 			//	If the phone number is different than before update it

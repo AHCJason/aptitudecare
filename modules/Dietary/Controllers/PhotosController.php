@@ -313,7 +313,7 @@ class PhotosController extends DietaryController {
 				$photo = $this->loadModel("Photo");
 				$photo->filename =  $fileName;
 				$photo->location_id = $location->id;
-				$photo->info_added = false;
+				$photo->info_added = 0;
 				if ($photo->save()) {
 					if ($this->createThumbnail($photo->filename)) {
 						json_return (array("filetype" => $fileType, "name" => $photo->filename));

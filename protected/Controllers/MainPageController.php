@@ -383,7 +383,7 @@ class MainPageController extends MainController {
 					array_push($error_test, true);
 				} else {
 					array_push($error_test, false);
-					break;
+					#break;
 				}
 
 			}
@@ -398,7 +398,7 @@ class MainPageController extends MainController {
 				array_push($error_test, true);
 			} else {
 				array_push($error_test, false);
-				break;
+				#break;
 			}
 
 		}
