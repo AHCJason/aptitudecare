@@ -122,7 +122,8 @@ class LocationsController extends MainPageController {
 		 *
 		 */
 
-		require_once FRAMEWORK_PROTECTED_DIR . DS . "Vendors" . DS . "PHPExcel/Classes/PHPExcel.php";
+		//Moved to composer. to do as PHPExcel is depricated in favor of PHPSpreadsheet
+		#require_once FRAMEWORK_PROTECTED_DIR . DS . "Vendors" . DS . "PHPExcel/Classes/PHPExcel.php";
 
 		$objPHPExcel = new PHPExcel();
 
