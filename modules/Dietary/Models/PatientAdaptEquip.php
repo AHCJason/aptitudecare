@@ -30,7 +30,7 @@ class PatientAdaptEquip extends Dietary {
     }
   }
 
-  public function fetchByLocation($location) {
+  public function fetchByLocation($location, $date = false) {
     $ae = $this->loadTable("AdaptEquip");
     $pae = $this->loadTable("PatientAdaptEquip");
     $schedule = $this->loadTable("Schedule");

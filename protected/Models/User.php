@@ -70,7 +70,7 @@ class User extends AppData {
 
 
 	public function fetchUserLocations($id = null) {
-		$sql = "SELECT `ac_location`.* FROM `ac_location` LEFT JOIN `ac_user_location` ON `ac_user_location`.`location_id` = `ac_location`.`id` WHERE `ac_user_location`.`user_id`=:id";
+		$sql = "SELECT DISTINCT `ac_location`.public_id, `ac_location`.* FROM `ac_location` LEFT JOIN `ac_user_location` ON `ac_user_location`.`location_id` = `ac_location`.`id` WHERE `ac_user_location`.`user_id`=:id ORDER BY name";
 		if ($id != null) {
 			$params[':id'] = $id;
 		} else {
@@ -82,7 +82,7 @@ class User extends AppData {
 
 
 	public function fetchUserAssignedLocations() {
-		$sql = "SELECT `ac_location`.* FROM `ac_location` LEFT JOIN `ac_user_location` ON `ac_user_location`.`location_id` = `ac_location`.`id` WHERE `ac_user_location`.`user_id`=:id";
+		$sql = "SELECT DISTINCT `ac_location`.public_id, `ac_location`.* FROM `ac_location` LEFT JOIN `ac_user_location` ON `ac_user_location`.`location_id` = `ac_location`.`id` WHERE `ac_user_location`.`user_id`=:id";
 		$params[':id'] = $this->id;
 		
 		return $this->fetchAll($sql, $params);

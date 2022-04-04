@@ -95,9 +95,9 @@ class AdmissionDashboard extends AppModel {
 			$hhSchedule->primary_insurance_number = $r->medicare_number;
 
 			if ($r->service_disposition == "AHC Home Health") {
-				$hhSchedule->confirmed = true;
+				$hhSchedule->confirmed = 1;
 			} else {
-				$hhSchedule->confirmed = false;
+				$hhSchedule->confirmed = 0;
 			}
 
 			$patient->public_id = $r->patient_pubid;
