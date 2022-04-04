@@ -491,6 +491,94 @@ class ReportsController extends DietaryController {
 
 		// get snacks
 		$snacks = $this->loadModel("Snack")->fetchSnackReport($location->id);
+		#die(print_r($snacks, true));
+		
+		
+		//add iddsi icons to snacks array
+		//this thing is an array of arrays of len 1 object
+		foreach($snacks as $snack)
+		{
+			if(count($snack) >= 1)
+			{
+				$tci = &$snack[0];
+				//process texture into icons:
+				$food_temp = null;
+				$liqu_temp = null;
+				if(strpos($tci->texture, "Liquidised") !== false)
+				{
+					$food_temp = "Down_3_Liquidized.png";
+				} elseif(strpos($tci->texture, "Puree") !== false)
+				{
+					$food_temp = "Down_4_Pureed.png";
+				}elseif(strpos($tci->texture, "Minced & Moist") !== false)
+				{
+					$food_temp = "Down_5_Minced_Moist.png";
+				}elseif(strpos($tci->texture, "Soft & Bite Sized") !== false)
+				{
+					$food_temp = "Down_6_Soft_Bite-Sized.png";
+				}elseif(strpos($tci->texture, "Easy to Chew") !== false)
+				{
+					$food_temp = "Down_7_RegularEC.png";
+				}elseif(strpos($tci->texture, "Regular") !== false)
+				{
+					//$food_temp = "Down_7_Regular.png";
+				}
+				
+				if(strpos($tci->texture, "Thin") !== false)
+				{
+					$liqu_temp = "0_Thin.png";
+				} elseif(strpos($tci->texture, "Slightly Thick") !== false)
+				{
+					$liqu_temp = "1_SlightlyThick.png";
+				}elseif(strpos($tci->texture, "Mildly Thick") !== false)
+				{
+					$liqu_temp = "2_Midly_Thick.png";
+				}elseif(strpos($tci->texture, "Moderately Thick") !== false)
+				{
+					$liqu_temp = "3_Moderately_Thick.png";
+				}elseif(strpos($tci->texture, "Extremely Thick") !== false)
+				{
+					$liqu_temp = "4_Extremely_Thick.png";
+				}
+				
+				if($food_temp !== null)
+					$tci->iddsi_food = $food_temp;
+				if($liqu_temp !== null)
+					$tci->iddsi_liqu = $liqu_temp;
+				
+				//process diet orders to icons
+				$tci->dietOrderIcons = array();
+				if(strpos($tci->diet, "AHA/Cardiac") !== false)
+				{
+					$tci->dietOrderIcons[] = "heart.png";
+				}
+				if(strpos($tci->diet, "RCS") !== false)
+				{
+					$tci->dietOrderIcons[] = "sugar.png";
+				}
+				if(strpos($tci->diet, "Gluten Restricted") !== false)
+				{
+					$tci->dietOrderIcons[] = "glutenRestricted.png";
+				}
+				if(strpos($tci->diet, "Fortified/High Calorie") !== false)
+				{
+					$tci->dietOrderIcons[] = "fortified.png";
+				}
+				if(strpos($tci->diet, "Renal") !== false)
+				{
+					$tci->dietOrderIcons[] = "renal.png";
+				}
+				if(strpos($tci->diet, "2 gram Na") !== false)
+				{
+					$tci->dietOrderIcons[] = "salt.png";
+				}
+				if(strpos($tci->diet, "No Added Salt") !== false)
+				{
+					$tci->dietOrderIcons[] = "salt.png";
+				}
+			}
+		}
+		#die(print_r($snacks, true));
 		smarty()->assign('snacks', $snacks);
 		smarty()->assign('location', $location);
 		smarty()->assign('isPDF', $is_pdf);
@@ -504,6 +592,7 @@ class ReportsController extends DietaryController {
 		smarty()->assign('printDate', $printDate);
 		
 		$this->pdfName = "snack_report_".date("Y-m-d").".pdf";
+		$this->landscape_array = array("LANDSCAPE!");
 
 	}
 
