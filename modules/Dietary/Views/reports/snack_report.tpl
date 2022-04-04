@@ -140,17 +140,21 @@ $(document).ready(function() {
         <th>Texture</th>
         <th>Snack</th>
         <th>Time</th>
+        <th width="190px">IDDSI</th>
       </tr>
       {foreach from=$snacks item=item key=time}
         {foreach from=$item item=snack}
         <tr>
           <td>{$snack->number}</td>
           <td>{$snack->patient_name}</td>
-          <td>{$snack->diet}{if $snack->diet_info_other}, {$snack->diet_info_other}{/if}</td>
+          <td>{foreach from=$snack->dietOrderIcons key=k2 item=foo}<img src="{$IMAGES}/iddsi/{$foo}" style="height:34px;float:left;padding-right:5px;">{/foreach}{$snack->diet}{if $snack->diet_info_other}, {$snack->diet_info_other}{/if}</td>
           <td>{$snack->allergy}</td>
           <td>{$snack->texture}{if $snack->texture_other}, {$snack->texture_other}{/if}</td>
           <td>{$snack->name}</td>
           <td>{$snack->time}</td>
+          <td>
+          {if !empty($snack->iddsi_food)}<img src="{$IMAGES}/iddsi/{$snack->iddsi_food}" style="display:inline-block;height:72px;">{/if}&nbsp;{if !empty($snack->iddsi_liqu)}<img src="{$IMAGES}/iddsi/{$snack->iddsi_liqu}" style="display:inline-block;height:72px;">{/if}
+          </td>
         </tr>
 
         {/foreach}
