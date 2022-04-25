@@ -341,7 +341,8 @@ class MenuController extends DietaryController {
 		smarty()->assign('location', $location);
 
 		// get alternates
-		$alternates = $this->loadModel("Alternate")->fetchOne(null, array("location_id" => $location->id));
+		//$alternates = $this->loadModel("Alternate")->fetchOne(null, array("location_id" => $location->id));
+		$alternates = $this->loadModel("Alternate")->fetchAlternates($location->id);
 
 		// put alternates in an array to display similar to the meal menu
 		if (strstr($alternates->content, ", ") || strstr($alternates->content, '; ')) {
