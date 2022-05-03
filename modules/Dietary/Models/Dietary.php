@@ -53,7 +53,8 @@ class Dietary extends AppModel {
 			$sql = "SELECT * FROM `{$table}`";
 			if (!empty($params)) {
 				foreach ($params as $k => $p) {
-					$sql .= " WHERE {$k} = {$p} AND";
+					#We still want the paramater binding to work so {p} to :{$k}
+					$sql .= " WHERE {$k} = :{$k} AND";
 				}
 
 				$sql = trim($sql, "AND");
