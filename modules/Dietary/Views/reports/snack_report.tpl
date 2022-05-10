@@ -147,7 +147,7 @@ $(document).ready(function() {
         <tr>
           <td>{$snack->number}</td>
           <td>{$snack->patient_name}</td>
-          <td>{foreach from=$snack->dietOrderIcons key=k2 item=foo}<img src="{$IMAGES}/iddsi/{$foo}" style="height:34px;float:left;padding-right:5px;">{/foreach}{$snack->diet}{if $snack->diet_info_other}, {$snack->diet_info_other}{/if}</td>
+          <td>{if !empty($snack->dietOrderIcons)}{foreach from=$snack->dietOrderIcons key=k2 item=foo}<img src="{$IMAGES}/iddsi/{$foo}" style="height:34px;float:left;padding-right:5px;">{/foreach}{/if}{$snack->diet}{if $snack->diet_info_other}, {$snack->diet_info_other}{/if}</td>
           <td>{$snack->allergy}</td>
           <td>{$snack->texture}{if $snack->texture_other}, {$snack->texture_other}{/if}</td>
           <td>{$snack->name}</td>
