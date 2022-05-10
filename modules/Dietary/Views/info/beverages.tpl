@@ -14,7 +14,7 @@
   {foreach $beverages as $key=>$bev}
       <div class="col-sm-4 col-xs-4 bev-item">
         {$bev->name}
-        <a href="" value="{$menu->public_id}" class="delete">
+        <a href="" value="{$bev->public_id}" class="delete">
           <img src="{$FRAMEWORK_IMAGES}/delete.png" class="pull-right" alt="">
           <input type="hidden" name="bev_id" class="bev-id" value="{$bev->public_id}" />
         </a>

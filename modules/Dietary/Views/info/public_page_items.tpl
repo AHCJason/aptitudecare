@@ -1,4 +1,7 @@
-
+{assign disabled ""}
+{if $authStatus eq false}
+	{assign disabled 'disabled="disabled"'}
+{/if}
 <div id="page-header">
 	<div id="action-left">&nbsp;</div>
 	<div id="center-title">{$this->loadElement("selectLocation")}</div>
@@ -14,16 +17,18 @@
 		<input type="hidden" name="path" value="{$current_url}">
 		<table class="form-multiple">
 			<tr>
-				<td><input type="text" name="menu_greeting" value="{$menuGreeting->menu_greeting}" size="65" onkeydown="limitText(this.form.menu_greeting,this.form.countdown,75)" onkeyup="limitText(this.form.menu_greeting,this.form.countdown,75)" maxlength="75"></td>
+				<td><input type="text" name="menu_greeting" {$disabled} value="{$menuGreeting->menu_greeting}" size="65" onkeydown="limitText(this.form.menu_greeting,this.form.countdown,75)" onkeyup="limitText(this.form.menu_greeting,this.form.countdown,75)" maxlength="75"></td>
 			</tr>
-			<tr>
+			<tr>{if $authStatus}
 				<td class="text-right"><font size="1">You have <input readonly type="text" name="countdown" size="3" value="75"> characters left. (Maximum characters: 75). </font></td>
+				{/if}
 			</tr>
 			<tr>
 				<td>&nbsp;</td>
 			</tr>
-			<tr>
+			<tr>{if $authStatus}
 				<td class="text-right"><input type="submit" value="Save"></td>
+				{/if}
 			</tr>
 		</table>
 	</form>
@@ -54,15 +59,16 @@
 				<td>Dinner</td>
 				{/if}
 
-				<td><input type="text" name="start[{$meal->id}]" value="{$meal->start|date_format:"%l:%M %P"}" class="timepicker"></td>
-				<td><input type="text" name="end[{$meal->id}]" value="{$meal->end|date_format:"%l:%M %P"}" class="timepicker"></td>
+				<td><input type="text" {$disabled} name="start[{$meal->id}]" value="{$meal->start|date_format:"%l:%M %P"}" class="timepicker"></td>
+				<td><input type="text" {$disabled} name="end[{$meal->id}]" value="{$meal->end|date_format:"%l:%M %P"}" class="timepicker"></td>
 			</tr>
 			{/foreach}
 			<tr>
 				<td>&nbsp;</td>
 			</tr>
-			<tr>
+			<tr>{if $authStatus}
 				<td colspan="3" class="text-right"><input type="submit" value="Save"></td>
+				{/if}
 			</tr>
 		</table>
 
@@ -81,12 +87,13 @@
 		<table class="form-multiple">
 			<tr>
 				<td colspan="2" class="text-center">
-					<textarea name="alt_menu" id="alt-menu" cols="75" rows="10">{$alternates->content|unescape:"html"}</textarea>
+					<textarea {$disabled} name="alt_menu" id="alt-menu" cols="75" rows="10">{$alternates->content|unescape:"html"}</textarea>
 					<p class="text-12" style="margin:0;"><strong>IMPORTANT:</strong> The alternate menu items must be separated with a semicolon (;) for them to display properly.</p>
 				</td>
 			</tr>
-			<tr>
+			<tr>{if $authStatus}
 				<td class="text-right"><input type="submit" value="Save"></td>
+				{/if}
 			</tr>
 		</table>
 	</form>

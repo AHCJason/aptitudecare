@@ -15,6 +15,8 @@ class LocationMenu extends Dietary {
 		return $this->fetchOne($sql, $params);
 	}
 
+//because of left join and then limit on location, this shows only menus for that location.
+//a more accurate name would be fetchAssigned();
 	public function fetchAvailable($location_id) {
 		$menu = $this->loadTable('Menu');
 		$sql = "SELECT * FROM {$this->tableName()} INNER JOIN {$menu->tableName()} ON {$menu->tableName()}.id = {$this->tableName()}.menu_id WHERE {$this->tableName()}.location_id = :location_id";
@@ -22,6 +24,16 @@ class LocationMenu extends Dietary {
 
 		return $this->fetchAll($sql, $params);
 	}
+	
+//show all menus including unassigned.	
+//added to update menu function.
+	public function fetchAvailableWithUnasigned($location_id) {
+		$menu = $this->loadTable('Menu');
+		$sql = "SELECT * FROM (SELECT * FROM {$this->tableName()} WHERE {$this->tableName()}.location_id = :location_id) AS {$this->tableName()} RIGHT JOIN {$menu->tableName()} ON {$menu->tableName()}.id = {$this->tableName()}.menu_id  ORDER BY {$this->tableName()}.date_start ASC, {$menu->tableName()}.id ASC";
+		$params[":location_id"] = $location_id;
+
+		return $this->fetchAll($sql, $params);
+	}	
 
 	public function fetchCurrent($location_id, $date) {
 		$menu = $this->loadTable("Menu");

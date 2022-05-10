@@ -10,5 +10,11 @@ class Menu extends Dietary {
 		$params[":start_date"] = $start_date;
 		return $this->fetchOne($sql, $params);
 	}
+	
+	public function fetchAllMenus() {
+		$sql = "SELECT * FROM {$this->tableName()} ORDER BY id DESC";
+		
+		return $this->fetchAll($sql);
+	}
 
 }

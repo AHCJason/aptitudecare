@@ -74,14 +74,24 @@ class InfoController extends DietaryController {
 	}
 
 	public function create(){
-
+		// if the user does not have permission then throw error and redirect
+		if (!auth()->hasPermission('create_menu')) {
+			session()->setFlash("You do not have permission to access that page.", 'error');
+			$this->redirect(array('module' => $this->getModule()));
+		}
 	}
 
 	public function save_create() {
-
+		// if the user does not have permission then throw error and redirect
+		if (!auth()->hasPermission('create_menu')) {
+			session()->setFlash("You do not have permission to access that page.", 'error');
+			$this->redirect(array('module' => $this->getModule()));
+		}
+		
 		if (input()->menu_name != "") {
 			$new_menu = $this->loadModel('Menu');
 			$new_menu->name = input()->menu_name;
+			$new_menu->public_id = getRandomString();
 		} else {
 			$error_messages[] = "Enter a name for the new menu";
 
@@ -102,16 +112,21 @@ class InfoController extends DietaryController {
 		if ($new_menu->save()) {
 			$success = false;
 			for ($day = 1; $day <= $num_days; $day++) {
+				$meal_id = 1;
 				while ($meal_id <= 3) {
 					$menu_item = $this->loadModel('MenuItem');
 					$menu_item->menu_id = $new_menu->id;
 					$menu_item->meal_id = $meal_id;
 					$menu_item->day = $day;
 					$menu_item->content = "No menu content has been entered.";
+					#try manual pubID gen
+					$menu_item->public_id = getRandomString();
+					#manual set datetime_created
+					$menu_item->datetime_created = mysql_datetime();
+					$menu_item->datetime_modified = mysql_datetime();
 					$menu_item->save();
 					$meal_id++;
 				}
-				$meal_id = 1;
 				$success = true;
 			}
 
@@ -144,7 +159,7 @@ class InfoController extends DietaryController {
 
 		// fetch all the menus
 		$menus = $this->loadModel('Menu')->fetchAll();
-
+		#die(print_r($menus, true));
 		smarty()->assign('menus', $menus);
 
 	}
@@ -207,6 +222,12 @@ class InfoController extends DietaryController {
 
 
 	public function corporate_menus() {
+		// if the user does not have permission then throw error and redirect
+		if (!auth()->hasPermission('create_menu')) {
+			session()->setFlash("You do not have permission to access that page.", 'error');
+			$this->redirect(array('module' => $this->getModule()));
+		}
+		
 		smarty()->assign('title', "Corporate Menus");
 		session()->setReferringPage();
 		// Get all available menus
@@ -236,6 +257,12 @@ class InfoController extends DietaryController {
 
 
 	public function facility_menus() {
+		// if the user does not have permission then throw error and redirect
+		if (!auth()->hasPermission('create_menu')) {
+			session()->setFlash("You do not have permission to access that page.", 'error');
+			$this->redirect(array('module' => $this->getModule()));
+		}
+		
 		smarty()->assign('title', "Facility Menu");
 		$location = $this->getLocation();
 
@@ -272,9 +299,17 @@ class InfoController extends DietaryController {
 
 
 	public function public_page_items() {
+		$authStatus = auth()->hasPermission('dietary_public_page_items');
+		
+		if (!auth()->hasPermission('dietary_public_page_items')) {
+			session()->setFlash("You do not have permission to save this page.", 'success');
+		}
+		
 		smarty()->assign("title", "Public Page Items");
+		smarty()->assign("authStatus", $authStatus);
 		$location = $this->getLocation();
 
+		#die($this->loadModel("LocationDetail")->tableName());
 		// menu greeting
 		$menuGreeting = $this->loadModel("LocationDetail")->fetchOne(null, array("location_id" => $location->id));
 		smarty()->assign("menuGreeting", $menuGreeting);
@@ -286,15 +321,15 @@ class InfoController extends DietaryController {
 		// alternate menu items
 		$alternates = $this->loadModel("Alternate")->fetchOne(null, array("location_id" => $location->id));
 		smarty()->assignByRef("alternates", $alternates);
-
-
-
-
 	}
 
 
 
 	public function submitWelcomeInfo() {
+		if (!auth()->hasPermission('dietary_public_page_items')) {
+			session()->setFlash("You do not have permission to save that page.", 'error');
+			$this->redirect(array('module' => $this->getModule()));
+		}
 		$greeting = $this->loadModel("LocationDetail", input()->location_detail_id);
 		$location = $this->loadModel("Location", input()->location);
 		$greeting->menu_greeting = input()->menu_greeting;
@@ -309,10 +344,13 @@ class InfoController extends DietaryController {
 
 
 	public function submitMealTimes() {
-
+		if (!auth()->hasPermission('dietary_public_page_items')) {
+			session()->setFlash("You do not have permission to save that page.", 'error');
+			$this->redirect(array('module' => $this->getModule()));
+		}
 		$message = array();
 
-
+		var_dump(input());
 		$end_time = get_object_vars(input()->end);
 
 		foreach (input()->start as $key => $start_time) {
@@ -344,6 +382,11 @@ class InfoController extends DietaryController {
 
 
 	public function submitAltItems() {
+		if (!auth()->hasPermission('dietary_public_page_items')) {
+			session()->setFlash("You do not have permission to save that page.", 'error');
+			$this->redirect(array('module' => $this->getModule()));
+		}
+
 		$location = $this->loadModel('Location', input()->location);
 		$alternate = $this->loadModel('Alternate', input()->alt_menu_id);
 
@@ -519,6 +562,14 @@ class InfoController extends DietaryController {
  *
  */
 	public function menu_start_date() {
+		$authStatus = auth()->hasPermission('dietary_menu_start_date');
+		
+		if (!auth()->hasPermission('dietary_menu_start_date')) {
+			session()->setFlash("You do not have permission to save this page.", 'success');
+		}
+		
+		smarty()->assign("authStatus", $authStatus);
+
 		smarty()->assign("title", "Menu Start Date");
 		$location = $this->getLocation();
 
@@ -526,7 +577,10 @@ class InfoController extends DietaryController {
 		smarty()->assign("date", $date);
 		$availableMenus = $this->loadModel("LocationMenu")->fetchAvailable($location->id);
 		$currentMenu = $this->loadModel("LocationMenu")->fetchCurrent($location->id, $date);
-		smarty()->assignByRef("availableMenus", $availableMenus);
+		
+		$allMenus = $this->loadModel("LocationMenu")->fetchAvailableWithUnasigned($location->id);
+
+		smarty()->assignByRef("availableMenus", $allMenus);
 		smarty()->assignByRef("currentMenu", $currentMenu);
 	}
 
@@ -539,6 +593,16 @@ class InfoController extends DietaryController {
 	 *
 	 */
 	public function submitStartDate() {
+		if (!auth()->hasPermission('dietary_menu_start_date')) {
+			if(isset(input()->isAjax) && input()->isAjax == true)
+			{
+				http_response_code(403); //Forbidden
+				json_return("You do not have permission to save that page.");
+			}
+			session()->setFlash("You do not have permission to save that page.", 'error');
+			$this->redirect(array('module' => $this->getModule()));
+		}
+
 		$location = $this->loadModel("Location", input()->location);
 		if (input()->menu != "") {
 			$menu = $this->loadModel("Menu", input()->menu);
@@ -556,9 +620,32 @@ class InfoController extends DietaryController {
 			$this->redirect(input()->path);
 		}
 
+		//this means this menu has not been set before.
+		if($locationMenu->id === NULL)
+		{
+			//$locationMenu is now considered new so populate
+			
+			$locationMenu->public_id = getRandomString();
+			$locationMenu->location_id = $location->id;
+			$locationMenu->menu_id = $menu->id;
+			$locationMenu->datetime_modified = mysql_datetime();
+			#die(var_dump($locationMenu));
+		}
+
 		if ($locationMenu->save()) {
-			session()->setFlash("The new menu will start on {$date} for {$location->name}", "success");
-			$this->redirect(array("module" => $this->module));
+			if(isset(input()->isAjax) && input()->isAjax == true)
+			{
+				json_return("Good!");
+			} else {
+				session()->setFlash("The new menu will start on {$date} for {$location->name}", "success");
+				$this->redirect(array("module" => $this->module));
+			}
+		} else {
+			if(isset(input()->isAjax) && input()->isAjax == true)
+			{
+				http_response_code(500); //it failed.
+				json_return("BAD!!");
+			}
 		}
 
 
