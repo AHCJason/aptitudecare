@@ -24,7 +24,7 @@ class PatientInfoController extends DietaryController {
 		}
 		
 
-		$PatientInfo_model =& $this->loadModel('PatientInfo');
+		$PatientInfo_model = $this->loadModel('PatientInfo');
 		// get the diet info for the selected patient
 		$patientInfo = $PatientInfo_model->fetchDietInfo2($patient->id);
 		$location = $this->loadModel("Location", $patientInfo->location_id);
