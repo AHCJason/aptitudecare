@@ -15,10 +15,12 @@ class MainPageController extends MainController {
  *  these pages even when not logged in.
  *
  * 	NOTE: Need to check security on these pages as users who are not logged in could actually access these pages.
+ * 	no longer needed with webkthml2pdf
  *
  */
 	public function allow_access() {
-		return array("meal_order_form", "adaptive_equipment", "allergies", "beverages", "meal_tray_card", "diet_census", "snack_report", "snack_labels", "print_menu");
+		//return array("meal_order_form", "adaptive_equipment", "allergies", "beverages", "meal_tray_card", "diet_census", "snack_report", "snack_labels", "print_menu");
+		return array();
 	}
 
 
@@ -93,8 +95,18 @@ class MainPageController extends MainController {
 			}
 
 			if ($this->action !== "user") {
+			//check that user has access to the module they are trying to load.
 				if (!$this->verifyModuleAccess($modules, $this->module)) {
-					$this->redirect(array("module" => $this->loadModel("Module")->fetchDefaultModule()->name));
+				//check if user has access to their default module,
+					if($this->verifyModuleAccess($modules, $this->loadModel("Module")->fetchDefaultModule()->name)) {
+					//they have access to their default, no problem.
+						$this->redirect(array("module" => $this->loadModel("Module")->fetchDefaultModule()->name));
+					} elseif(count($modules) > 0) {
+					//they do not have acess to their default., redirect to the first permitted module.
+						$this->redirect(array("module" => $modules[0]->name));
+					} else {
+						$this->redirect(array("page" => "login"));
+					}
 				}
 			}
 

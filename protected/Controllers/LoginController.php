@@ -68,7 +68,8 @@ class LoginController extends MainPageController {
 			if (auth()->login($username, $password)) {
 				// redirect to users' default home page
 				//$this->redirect(array('module' => session()->getSessionRecord('default_module')));
-
+				/*
+				//old for when auth was local.
 				$user = auth()->getRecord();
 				if ($user->temp_password) {
 					$this->redirect(array('module' => 'Dietary', 'page' => 'users', 'action' => 'reset_password', 'id' => $user->public_id));
@@ -76,6 +77,17 @@ class LoginController extends MainPageController {
 					$this->redirect(array('module' => 'Admission', 'user' => $user->public_id));
 				} else {
 					$this->redirect(array('module' => $user->module_name));
+				}*/
+				$user = auth()->getRecord();
+				$vc = auth()->VouchCookie();
+
+				//updated to pull default module from vouch token, goes there just to be redirected back elsewhere.
+				if ($user->temp_password) {
+					$this->redirect(array('module' => 'Dietary', 'page' => 'users', 'action' => 'reset_password', 'id' => $user->public_id));
+				} elseif ($vc->default_module == "Admission") {
+					$this->redirect(array('module' => 'Admission', 'user' => $user->public_id));
+				} else {
+					$this->redirect(array('module' => $vc->default_module));
 				}
 				
 				
@@ -89,8 +101,8 @@ class LoginController extends MainPageController {
 
 	}	
 
-
-	public function admission_login() {
+	//used for HH
+	public function admission_login() {	
 		//	Check db for username and public_id
 		$user = $this->loadModel('User', input()->id);
 		$verified = false;
