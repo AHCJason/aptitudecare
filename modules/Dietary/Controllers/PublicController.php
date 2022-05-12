@@ -89,7 +89,10 @@ class PublicController extends DietaryController {
 		$menu = $this->loadModel("Menu")->fetchMenu($location->id, $start_date);
 
 		// Get the meal times
-		$meal = $this->loadModel("Meal")->fetchByLocation($location->id);
+		//$meal = $this->loadModel("Meal")->fetchByLocation($location->id);
+		//do it like the InfoController, public page items for ordering
+		$meal = $this->loadModel("Meal")->fetchAll(null, array("location_id" => $location->id));
+
 		// Get the public greeting about meals
 		$locationDetail = $this->loadModel("LocationDetail")->fetchOneByLocation($location->id);
 
