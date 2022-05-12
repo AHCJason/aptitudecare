@@ -43,7 +43,6 @@ class Dietary extends AppModel {
 
 
 	public function fetchAll($sql = null, $params = array(), $db = false) {
-		
 		$called_class = get_called_class();
 		$class = new $called_class;
 
@@ -60,8 +59,14 @@ class Dietary extends AppModel {
 				$sql = trim($sql, "AND");
 			}
 
-			if (isset ($table->name)) {
+			//fix order by name
+			if (property_exists ($this, "name")) {
 				$sql .= "ORDER BY name ASC";
+			}
+
+			//add search by type.
+			if (property_exists ($this, "type")) {
+				$sql .= "ORDER BY type ASC";
 			}
 
 		}

@@ -49,20 +49,22 @@
 				<td><strong>End</strong></td>
 			</tr>
 			<tr>
+				
+		{foreach from=$meals item="meal" name="meal_name"}
+			{if $meal->type == 1}
 				<td>Breakfast</td>
-			{foreach from=$meals item="meal" name="meal_name"}
-
-				{if $meal@iteration == 2}
+			{/if}
+			{if $meal->type == 2}
 				<td>Lunch</td>
-				{/if}
-				{if $meal@iteration == 3}
+			{/if}
+			{if $meal->type == 3}
 				<td>Dinner</td>
-				{/if}
+			{/if}
 
 				<td><input type="text" {$disabled} name="start[{$meal->id}]" value="{$meal->start|date_format:"%l:%M %P"}" class="timepicker"></td>
 				<td><input type="text" {$disabled} name="end[{$meal->id}]" value="{$meal->end|date_format:"%l:%M %P"}" class="timepicker"></td>
 			</tr>
-			{/foreach}
+		{/foreach}
 			<tr>
 				<td>&nbsp;</td>
 			</tr>
