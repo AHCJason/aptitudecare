@@ -312,14 +312,83 @@ class InfoController extends DietaryController {
 		#die($this->loadModel("LocationDetail")->tableName());
 		// menu greeting
 		$menuGreeting = $this->loadModel("LocationDetail")->fetchOne(null, array("location_id" => $location->id));
+	
+		//if this is false then one has not been created before.
+		if($menuGreeting === false) {
+			$menuGreeting = $this->loadModel("LocationDetail");
+			$menuGreeting->location_id =  $location->id;
+			$menuGreeting->menu_greeting =  " ";
+			$menuGreeting->datetime_created =  mysql_datetime();;
+			$menuGreeting->datetime_modified =  mysql_datetime();;
+			$menuGreeting->id =  NULL;
+			$menuGreeting->save();
+		}
 		smarty()->assign("menuGreeting", $menuGreeting);
 
 		// meal time info
 		$meals = $this->loadModel("Meal")->fetchAll(null, array("location_id" => $location->id));
+		if(count($meals) != 3)
+		{
+			//base config of type => name, start, end.
+			$meals2fix = array(
+				1=> array(
+					"name" => "Breakfast", 
+					"start" => "8:00",
+					"end" => "9:30"
+				),
+				2=> array(
+					"name" => "Lunch", 
+					"start" => "11:00",
+					"end" => "12:30"
+				),
+				3=> array(
+					"name" => "Dinner",
+					"start" => "17:00",
+					"end" => "18:15"
+				)
+			);
+
+			//if the meal already exists from DB, don't create new ones.
+			foreach($meals as $k => $v) {
+				unset($meals2fix[$meals[$k]->type]);
+			}
+
+			//create new meal objects and save to DB.
+			foreach($meals2fix as $k => $v) {
+				$tempMeal = $this->loadModel("Meal");
+				$tempMeal->id = NULL;
+				$tempMeal->location_id = $location->id;
+				$tempMeal->type = $k;
+				$tempMeal->start = $v['start'];
+				$tempMeal->end = $v['end'];
+				$tempMeal->datetime_created =  mysql_datetime();
+				$tempMeal->datetime_modified =  mysql_datetime();
+				$tempMeal->save();
+				$meals[] = $tempMeal;
+			}
+
+			//sort array to be the right order if we have been messing with a missing item.
+			usort($meals, function($a, $b) {return strcmp($a->type, $b->type);});
+
+		} 
+		//var_dump($meals);
 		smarty()->assign("meals", $meals);
 
 		// alternate menu items
 		$alternates = $this->loadModel("Alternate")->fetchOne(null, array("location_id" => $location->id));
+		if($alternates === false)
+		{
+			$user = auth()->getRecord();
+
+			$alternates = $this->loadModel("Alternate");
+			$alternates->location_id = $location->id;
+			$alternates->user_id = $user->id;
+			$alternates->content = "Alternate1; Alternate2";
+			$alternates->datetime_created =  mysql_datetime();
+			$alternates->datetime_modified =  mysql_datetime();
+			$alternates->save();
+		}
+
 		smarty()->assignByRef("alternates", $alternates);
 	}
 
