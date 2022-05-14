@@ -1,4 +1,12 @@
 <!-- modules/Dietary/Views/public/index.tpl -->
+{if $do_i_have_location eq false}
+	<div class="text-center">
+	<h1>Advanced Health Care Public Menu Board</h1>
+	<p>We're sorry! This page displays the current menu and activities for each Advanced
+	Health Care location. However, this page is only accessible from within an Advanced
+	Heath Care facility.</p>
+{else}
+
 
 <div id="transitionDiv">
 	{if $warning}
@@ -11,7 +19,7 @@
 	{/if}
 
 	<!-- Main menu content page -->
-	<div id="panel-0" class="rotatingPage">
+	<div id="panel-0" class="rotatingPage" time=18>
 		<div id="mainContent">
 			<div id="mainLogo">
 				<img src="{$IMAGES}/facility_logo/{$location->logo}" alt="">
@@ -64,14 +72,10 @@
 
 
 	<!-- Activities page -->
-	<div id="panel-1" class="rotatingPage" style="display: none;">
+	<div id="panel-1" class="rotatingPage" style="display: none;" time=6>
 		<div class="transitionDiv">
 			<div id="activitiesContent">	
-				<?php if ($facilityId == 12): ?>
-				<div id="grangeville-teton">
-				<?php else: ?>
 				<div id="teton">
-				<?php endif; ?>
 					<div id="mainLogo">
 						<img src="{$IMAGES}/facility_logo/{$location->logo}" alt="">
 						{if $location->id == 12}
@@ -106,3 +110,4 @@
 			</div>
 		</div>
 	</div>
+{/if}

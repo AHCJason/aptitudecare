@@ -8,7 +8,8 @@ var firstRun = 0;
 var loadNumber = 0;
 var loadFailCount = 0;
 var errorStatus = 0;
-	
+var current_interval = null;	
+
  $(document).ready(function() {
 	//loadPage();  //Load the menu on the page load
 
@@ -18,14 +19,15 @@ var errorStatus = 0;
 	//setup debugger
 	$('.panelCount').html('panelCount = '+window.panelCount);
 	
-	setInterval(autoAdvance, 18000); // page rotates every 18 seconds
+	//last_interval = setInterval(autoAdvance, 18000); // page rotates every 18 seconds
+	current_interval = setInterval(autoAdvance, $('#panel-' + currentPanel).attr("time") * 1000); // page rotates as defined by the div tag.
 
 	//Tell javascript to call loadpage every X milliseconds
-	setInterval(loadPage, 900000); // 15 minute (900000) ms for production
+	//setInterval(loadPage, 900000); // 15 minute (900000) ms for production
 	
 });
 
-	
+/*
 //function called by JS engine every X seconds to update the menu contents.
 function loadPage()
 {	// check if we have internet access
@@ -65,7 +67,7 @@ function postLoad(response, status, xhr)
 		$('#error').hide();
 		
 	}
-}
+}*/
 
 function autoAdvance(){
 	// get all panels
@@ -89,6 +91,9 @@ function autoAdvance(){
 			firstRun = 0;
 		}
 	}
+
+	clearInterval(current_interval);
+	current_interval = setInterval(autoAdvance, $('#panel-' + nextPanel).attr("time") * 1000);
 
 	var delay = 3000;
 	if (window.innerWidth <= 1024) {

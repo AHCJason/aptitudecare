@@ -1,4 +1,22 @@
-<!-- /app/View/Layouts/default.ctp -->
+{if $reloadFrame eq true}
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<title>Advanced Health Care Menu &amp; Activities</title>
+	{literal}
+    <script type="text/javascript">
+      window.onload=function() {
+          window.setInterval(function() {window.frames.Displayframe.location.reload()}, 1000*60*15); //every 15 mintues refresh internal frame
+      }
+    </script>
+	{/literal}
+  </head>
+  <frameset cols="*">
+    <frame name="Displayframe" src="{$framePath}" scrolling="no">
+  </frameset>
+</html>
+{else}
+<!-- /app/View/Layouts/public.ctp -->
 {*<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">*}
 <!DOCTYPE html>
 <html lang="en">
@@ -18,10 +36,9 @@
 </head>
 
 <body>
-
 	<div id="wrapper">
 		<div class="overall">
-			<input type="hidden" name="location" value="{$location->public_id}" />
+			{* <input type="hidden" name="location" value="{$location->public_id}" /> *}
 
 			<div id="header">
 				<div id="headerTop">
@@ -60,3 +77,4 @@
 	<div id="error" style="display:none;position:absolute;bottom:10px;left:20px;font-size: 2em;color:yellow;">&#x26A0;</div>
 </body>
 </html>
+{/if}
