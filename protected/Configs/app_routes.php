@@ -65,7 +65,7 @@
 				$page = ucfirst(camelizeString($queryString[1]));
 
 			} else {
-				$page = 'Login';
+				//$page = 'Login';
 
 			}
 			// If there is a second item in the array then this is the controller method (action)

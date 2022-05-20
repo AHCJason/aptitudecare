@@ -136,6 +136,7 @@ class MainPageController extends MainController {
 		}
 	}
 
+	//this function gets areas for HH, locations for SNFs
 	private function fetchLocations() {
 		$areas = null;
 		$selectedArea = null;
@@ -159,7 +160,8 @@ class MainPageController extends MainController {
 			// get either the selected location or the users' default location
 			$location = $this->getSelectedLocation();
 		} else {
-			$locations = $this->loadModel('Location')->fetchAllLocations();
+			//on generic pages not in modules all locations are visible.
+			$locations = $this->loadModel('Location')->fetchAllLocations(); //regardless of type
 			$location = $this->getSelectedLocation($locations);
 		}
 
@@ -174,12 +176,11 @@ class MainPageController extends MainController {
 	}
 
 	protected function getSelectedLocation() {
-		$user = auth()->getRecord();
 
 		if (isset (input()->location)) {
 			$location = $this->loadModel('Location', input()->location);
 		} else {
-			$location = $this->loadModel('Location', $user->default_location);
+			$location = $this->loadModel('Location', auth()->getDefaultLocation());
 		}
 
 		// if we are on the homehealth module and the users default location type is 1

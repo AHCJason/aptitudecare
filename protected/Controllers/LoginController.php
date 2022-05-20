@@ -14,7 +14,8 @@ class LoginController extends MainPageController {
 	public function index() {	
 		
 		if (auth()->isLoggedIn()) {
-			$this->redirect(array('module' => auth()->getRecord()->module_name));
+			//$this->redirect(array('module' => auth()->getRecord()->module_name));
+			$this->redirect(array('module' => auth()->VouchCookie()->default_module));
 		}
 		// Check session for errors to be displayed
 		session()->checkFlashMessages();
@@ -71,6 +72,7 @@ class LoginController extends MainPageController {
 				/*
 				//old for when auth was local.
 				$user = auth()->getRecord();
+				die(var_dump($user));
 				if ($user->temp_password) {
 					$this->redirect(array('module' => 'Dietary', 'page' => 'users', 'action' => 'reset_password', 'id' => $user->public_id));
 				} elseif ($user->module_name == "Admission") {
@@ -80,6 +82,17 @@ class LoginController extends MainPageController {
 				}*/
 				$user = auth()->getRecord();
 				$vc = auth()->VouchCookie();
+				
+				//manual and hackish set modules to session, we will use this in admissions to get module switching to make sense.
+				if(!isset($_SESSION[APP_NAME]['modules'])) {
+					$modules = $this->loadModel('Module')->fetchUserModules(auth()->getPublicId());
+					$_SESSION[APP_NAME]['modules'] = array();
+					foreach($modules as $k => $v)
+					{
+						$_SESSION[APP_NAME]['modules'][] = $v->name;
+					}
+					#die(print_r($modules, true));
+				}
 
 				//updated to pull default module from vouch token, goes there just to be redirected back elsewhere.
 				if ($user->temp_password) {
@@ -149,12 +162,14 @@ class LoginController extends MainPageController {
 
 	public function admission_logout() {
 		auth()->logout();
-		$this->redirect(array('page' => 'login', 'action' => 'index'));
+		//$this->redirect(array('page' => 'login', 'action' => 'index'));
+		$this->redirect();
 	}
 	
 	public function logout() {
 		auth()->logout();
-		$this->redirect(array('page' => 'login', 'action' => 'index'));
+		//$this->redirect(array('page' => 'login', 'action' => 'index'));
+		$this->redirect();
 	}
 	
 

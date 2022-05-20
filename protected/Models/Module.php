@@ -19,7 +19,7 @@ class Module extends AppData {
 				$sql = trim($sql, ", ");
 				$sql .= ")));";
 
-				#die($sql);
+				#die($sql.print_r($params, true));
 				return db()->FetchRows($sql, $params, $this);
 			} else {
 				$sql = "SELECT {$this->tableName()}.* FROM {$this->tableName()} INNER JOIN `ac_user_module` ON `ac_user_module`.`module_id`={$this->tableName()}.`id` INNER JOIN `ac_user` ON `ac_user`.`id`=`ac_user_module`.`user_id` WHERE `ac_user`.`public_id`=:userid order by `ac_user`.`default_module`, `ac_module`.`name` ASC";
