@@ -17,7 +17,7 @@
 			{foreach from=$menu item="content"}
 			<div class="menu-content">
 				{foreach $content as $item}
-					<span>{$item}</span><br>
+				{if $item|strstr:":"}{assign var="parts" value=":"|explode:$item}<span>{$parts[0]}:</span><span>{$parts[1]}</span>{else}<span>{$item}</span><br>{/if}
 				{/foreach}
 			</div>
 			{/foreach}
@@ -37,7 +37,7 @@
 	</div>*}
 
 	<div class="row">
-		<div class="col-xs-12 menu-alts">
+		<div class="menu-alts">
 			<p>{$alternates->content}</p>
 		</div>
 	</div>
