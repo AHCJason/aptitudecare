@@ -7,6 +7,110 @@
 	Heath Care facility.</p>
 {else}
 
+{* IF ARR, expand to type? *}
+{if $location->id == 36}
+<style>
+@font-face {
+	font-family: Cormorant;
+	src: url(/css/Cormorant-Bold.otf);
+}
+@font-face {
+	font-family: Street;
+	src: url(/css/strexp__.ttf);
+}
+#headerLogo {
+	display: none;
+}
+body {
+	background-color: white;
+	color: black;
+}
+#menuTitle {
+	display: none;
+}
+#menuPic {
+	position: absolute;
+	background: url(./img/leaf.png) no-repeat;
+	background-position-y: 100px;
+	background-position-x: center;
+	background-size: 350px;
+	margin-top
+}
+#date {
+	margin-top: 3px;
+}
+div.menu h2 {
+	text-transform: uppercase; 
+	font-family: Cormorant;
+}
+p.time {
+	font-family: Street;
+	/*font-weight: bold;*/
+}
+
+#altMenu h2 {
+	font-family: Street;
+}
+
+.raisingTheStandard {
+	font-family: Street;
+	font-weight: bolder;
+	text-transform: uppercase;
+}
+
+.raisingTheStandard::before {
+	content: "";
+	text-align-center;
+}
+
+.raisingTheStandard img{
+	display: none;
+}
+
+.activitiesStandard img {
+	display: none;
+}
+
+#headerTop img{
+	display: none;
+
+}
+#activitiesTitle::before {
+	content: "Upcoming Activities!";
+	text-align-center;
+	font-family: Cormorant;
+	color: white;
+	font-size: 40pt;
+	height: 50px;
+	/*background-image: linear-gradient(to right, #175F72, #6797A9);*/
+}
+
+#activitiesTitle {
+	background-image: linear-gradient(to right, #175F72, #6797A9);
+	padding: 10px;
+}
+
+#activitiesTitle img{
+	display: none;
+	margin-bottom: 40px;
+}
+#headerTop {
+	height: 15px;
+	background-image: linear-gradient(to right, #175F72, #6797A9);
+}
+
+#teton {
+	background: none;
+	height: 350px;
+}
+
+.activity h2 {
+	text-transform: uppercase; 
+	font-family: Cormorant;
+}
+
+</style>
+{/if}
 
 <div id="transitionDiv">
 	{if $warning}
