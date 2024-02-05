@@ -25,6 +25,23 @@
 	});
 </script>
 
+{literal}
+<style>
+ul.meal1 li:nth-last-of-type(1){
+	font-size:1.4em;
+	font-weight: bold;
+}
+ul.meal2 li:first-of-type {
+	font-size:1.4em;
+	font-weight: bold;
+}
+ul.meal0 li:first-of-type {
+	font-size:1.4em;
+	font-weight: bold;
+}
+</style>
+{/literal}
+
 <div id="page-header">
 	<div id="action-left">
 		{$this->loadElement("module")}
@@ -66,16 +83,16 @@
 		<td class="menu-content">
 			<div class="menu">
 				<div class="menu-info {if $menuItem->type == "MenuMod"}background-blue{elseif $menuItem->type == "MenuChange"} background-grey{/if}">
-					<ul>
+					<ul class="meal{$smarty.foreach.menuItems.iteration % 3}">
 					{foreach $menuItem->content as $menu}
 						<li>{$menu|strip_tags:true}</li>
 					{/foreach}
 					</ul>
 				</div>
 				<div class="clear"></div>
-				<div class="menu-edit-button">
+				{if $permission}<div class="menu-edit-button">
 					<a href="{$SITE_URL}/?module=Dietary&amp;page=menu&amp;action=edit&amp;location={$location->public_id}&amp;type={$menuItem->type}&amp;id={$menuItem->public_id}&amp;date={"$startDate + $count day"|date_format:"%Y-%m-%d"}" class="button">Edit</a>
-				</div>
+				</div>{/if}
 			</div>
 
 		</td>

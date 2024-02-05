@@ -9,6 +9,12 @@ class MenuController extends DietaryController {
 
 
 	public function edit() {
+
+		if (!auth()->hasPermission('manage_menu')) {
+			session()->setFlash("You do not have permission to access that page.", 'error');
+			$this->redirect(array('module' => $this->getModule()));
+		}
+		
 		smarty()->assign('title', "Edit Menu");
 		$menuMod = false;
 
@@ -75,6 +81,12 @@ class MenuController extends DietaryController {
 
 
 	public function submit_edit() {
+
+		if (!auth()->hasPermission('manage_menu')) {
+			session()->setFlash("You do not have permission to save this page.", 'error');
+			$this->redirect(array('module' => $this->getModule()));
+		}
+
 		// If this is already a menu mod load the current changes...
 		if (input()->menu_type == "MenuMod") {
 			$menuItem = $this->loadModel('MenuMod', input()->public_id);

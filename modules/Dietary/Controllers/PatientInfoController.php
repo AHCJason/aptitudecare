@@ -688,6 +688,8 @@ class PatientInfoController extends DietaryController {
 			$this->redirect(input()->currentUrl);
 		}
 
+		$patient->public_id = getRandomString();
+
 		// save patient info
 		if ($patient->save()) {
 			// if the patient info save is successful, then set the patient admit data and save it
@@ -697,12 +699,14 @@ class PatientInfoController extends DietaryController {
 			$schedule->room_id = $room->id;
 			$schedule->datetime_admit = mysql_date(input()->admit_date);
 			$schedule->status = "Approved";
+			$schedule->public_id = getRandomString();
 
 
 			// set dietary patient info
 			$dietaryInfo = $this->loadModel("PatientInfo");
 			$dietaryInfo->patient_id = $patient->id;
 			$dietaryInfo->location_id = $location->id;
+			$dietaryInfo->public_id = getRandomString();
 
 
 			if ($schedule->save() && $dietaryInfo->save()) {

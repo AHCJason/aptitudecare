@@ -167,6 +167,7 @@ class PublicController extends DietaryController {
 			// $headless = false;
 			// header("Cache-Control; no-cache; must-revalidate");
 			// header("Expires: Fri, 31 Jul 1980 06:00:00 GMT");
+			header('Content-type: text/html; charset=utf-8');
 
 			// if (isset(input()->headless) && input()->headless == true) {
 			// 	$headless = true;

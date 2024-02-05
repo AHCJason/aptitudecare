@@ -15,6 +15,9 @@ class InfoController extends DietaryController {
 
 		smarty()->assign('title', "Current Menu");
 
+		//passthrough permission to hide edit button.
+		smarty()->assign('permission', auth()->hasPermission('manage_menu'));
+
 		// Check url for week in the past or future
 		if (isset (input()->weekSeed)) {
 			$weekSeed = input()->weekSeed;
@@ -36,10 +39,13 @@ class InfoController extends DietaryController {
 			'retreatWeekSeed' => date("Y-m-d", strtotime("-7 days", strtotime($weekSeed))),
 		));
 
+
 		$_dateStart = date('Y-m-d', strtotime($week[0]));
 		$_dateEnd = date('Y-m-d', strtotime($week[6]));
 
-		if (strtotime($_dateStart) > strtotime('now')) {
+		//changed to be if today not in week shown, show today button.
+		//if (strtotime($_dateStart) > strtotime('now')) {
+		if (!in_array(date('Y-m-d', strtotime('now')), $week, true)) {
 			$today = date('Y-m-d', strtotime('now'));
 		} else {
 			$today = false;
