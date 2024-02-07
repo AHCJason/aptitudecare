@@ -1,5 +1,5 @@
 <li><a href="{$SITE_URL}?module=Dietary&amp;page=dietary&amp;action=index&amp;location={$location->public_id}">Home</a></li>
-{if $auth->hasPermission('manage_menu')}
+{*{if $auth->hasPermission('manage_menu')}*}
 <li>Info
 	<ul>
 		<li><a href="{$SITE_URL}?module={$this->getModule()}&amp;page=info&amp;action=current&amp;location={$location->public_id}">Current Menu</a></li>
@@ -16,7 +16,7 @@
 
 	</ul>
 </li>
-{/if}
+{*{/if}*}
 <li>Reports
 	<ul>
 		<li><a href="{$SITE_URL}?module={$this->getModule()}&amp;page=reports&amp;action=adaptive_equipment&amp;location={$location->public_id}">Adaptive Equipment</a></li>

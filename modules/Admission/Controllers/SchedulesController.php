@@ -30,8 +30,11 @@ class SchedulesController extends AdmissionController {
 			if ($schedule->move($this->getLocation()->id, $patient->id, input()->oldroom, input()->newroom)) {
 				return true;
 			}
+			
+		} else {
+			return false;
 		}
-		return false;
+		
 		//$data = "HELLO WORLD!"; //print_r($currentPatients, true);
 		
 		//$this->template  = 'pdf2';
