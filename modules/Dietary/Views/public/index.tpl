@@ -123,7 +123,7 @@ p.time {
 	{/if}
 
 	<!-- Main menu content page -->
-	<div id="panel-0" class="rotatingPage" time=18>
+	<div id="panel-0" class="rotatingPage" time={if $location->id != 36}18{else}1800{/if}>
 		<div id="mainContent">
 			<div id="mainLogo">
 				<img src="{$IMAGES}/facility_logo/{$location->logo}" alt="">
@@ -174,7 +174,7 @@ p.time {
 
 	</div>
 
-
+	{if $location->id != 36}
 	<!-- Activities page -->
 	<div id="panel-1" class="rotatingPage" style="display: none;" time=6>
 		<div class="transitionDiv">
@@ -214,4 +214,5 @@ p.time {
 			</div>
 		</div>
 	</div>
+	{/if}
 {/if}

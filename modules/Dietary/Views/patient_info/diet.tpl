@@ -428,6 +428,8 @@
 		<label class="checkbox-label">
 			<input type="text" id="other-other-input" name="fluid_other" maxlength="25" placeholder="Enter fluid restriction info... (25 character limit)" value="{$patientInfo->fluid_other}{$other['other']}">
 		</label>
+		{* extra to bypass blank check for the other so isolation can be removed. *}
+		{* <input style="display:none;" type="hidden" id="other-other-input" name="other[]" maxlength="25" placeholder="Enter fluid restriction info... (25 character limit)" value=""> *}
 
 	<!-- Portion Size Section -->
 		<label class="checkbox-label">
