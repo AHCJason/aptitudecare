@@ -5,7 +5,7 @@
 	<input type="hidden" name="action" value="saveAddPatient">
 	<input type="hidden" name="location" value="{$location->id}">
 	<input type="hidden" name="number" value="{$number}">
-	<input type="hidden" name="currentUrl" value="{$currentUrl}">
+	<input type="hidden" name="currentUrl" value="{$currentUrl|Default: ""}">
 	<table class="form">
 		<tr>
 			<td class="text-strong">Room</td>

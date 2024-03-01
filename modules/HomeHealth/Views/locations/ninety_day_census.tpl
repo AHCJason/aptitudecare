@@ -32,7 +32,7 @@
 		</td>
 		<td>{display_date($patient->datetime_discharge)|default: ""}</td>
 		<td>{$patient->referral_source}</td>
-		<td style="width:19%" class="text-center">{$patient->fullAddress() nofilter}</td>
+		<td style="width:19%" class="text-center">{$patient->fullAddress()}</td>#nofilter
 		<td>{$patient->physician_name}</td>
 	</tr>
 	{/foreach}

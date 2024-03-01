@@ -4,6 +4,12 @@ class DietaryMenuHelper {
 
 	public function menu($patient, $selectedLocation, $modEnabled = true, $k = "") {
 
+
+		//helper objects must be escaped. here.
+
+		$pt_first = htmlspecialchars($patient->first_name, ENT_QUOTES);
+		$pt_last = htmlspecialchars($patient->last_name, ENT_QUOTES);
+
 		//	Get patient schedule
 		$rand = rand(1, 10000) * $patient->id;
 		$options = '';
@@ -15,7 +21,7 @@ class DietaryMenuHelper {
 				Change Room
 				<input type=\"hidden\" name=\"public_id\" class=\"public-id\" value=\"{$patient->public_id}\">
 				<input type=\"hidden\" name=\"room_number\" class=\"room-number\" value=\"{$patient->number}\">
-				<input type=\"hidden\" name=\"patient_name\" class=\"patient-name\" value=\"{$patient->last_name}, {$patient->first_name}\">
+				<input type=\"hidden\" name=\"patient_name\" class=\"patient-name\" value=\"{$pt_last}, {$pt_first}\">
 		</a></li>";
 		$options .= "<li><a href=\"#\" class=\"delete-patient\" style=\"padding-left: 0px;\">
 				<img src=\"".FRAMEWORK_IMAGES."/delete.png\" class=\"{$k}\" style=\"position: relative;width: 15px;height: 15px;\" alt=\"\">

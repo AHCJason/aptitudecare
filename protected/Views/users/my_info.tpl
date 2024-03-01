@@ -1,5 +1,5 @@
-<h1>Edit My Account</h1>
-<script>
+<h1>My Account Details</h1>
+{*<script>
 	$(document).ready(function() {
 		$("#password-change").validate({
 			rules: {
@@ -12,10 +12,27 @@
 		});
 	});
 
-	});
+	});*}
 </script>
 
+<h3>App</h3>
+<pre>
+First Name:	{$user->first_name}
+Last Name:	{$user->last_name}
+User Name:	{$user->email}
+</pre>
 
+<h3>Okta/Vouch</h3>
+<pre>
+Login:		{$vc->login}
+Okta Userid:	{$vc->okta_userid}
+DefaultModule:	{$vc->default_module}
+DefaultLoc:	{$vc->default_location}
+User Access:	{implode( " | ", $vc->Useraccess)}
+AvailLoc:	{implode( " | ", $vc->Available_Loc)}
+</pre>
+
+{*
 <form name="user" id="edit" method="post" action="{$SITE_URL}">
 	<input type="hidden" name="page" value="users" />
 	<input type="hidden" name="action" value="save_my_info" />
@@ -56,3 +73,4 @@
 
 	</table>
 </form>
+*}

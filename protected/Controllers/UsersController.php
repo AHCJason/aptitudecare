@@ -45,13 +45,14 @@ class UsersController extends MainPageController {
 
 	public function my_info() {
 		// prevent unauthorized access to this page...
-		if (!auth()->hasPermission("manage_users") && input()->id !== auth()->getRecord()->public_id) {
+		/*{if (!auth()->hasPermission("manage_users") && input()->id !== auth()->getRecord()->public_id) {
 			session()->setFlash("You do not have permission to access this page", 'error');
 			$this->redirect();
-		}
-		smarty()->assign('title', 'Edit User');
-		smarty()->assign('page_header', "Edit My Account");
+		}*/
+		smarty()->assign('title', 'Account Details');
+		smarty()->assign('page_header', "My Account Details");
 		smarty()->assign('existing', true);
+		smarty()->assign('vc', auth()->VouchCookie());
 
 		$user = $this->loadModel('User', auth()->getRecord()->id);
 
@@ -59,6 +60,7 @@ class UsersController extends MainPageController {
 
 	}
 
+	/*
 	public function save_my_info() {
 
 		$user = $this->loadModel('User', auth()->getRecord()->public_id);
@@ -119,7 +121,7 @@ class UsersController extends MainPageController {
 			}
 		}
 
-	}
+	}*/
 
 
 
@@ -167,6 +169,7 @@ class UsersController extends MainPageController {
 	 * Edit page for an existing user  
 	 *	
 	 */
+	/*
 	public function user() {
 
 		if (input()->type == "add") {
@@ -247,8 +250,7 @@ class UsersController extends MainPageController {
 
 		smarty()->assignByRef('user', $user);
 	}
-
-
+*/
 
 
 
@@ -256,6 +258,7 @@ class UsersController extends MainPageController {
 	 * Submit the info for the new user 
 	 *	
 	 */
+	/*
 	public function save_user() {
 
 		if (!auth()->hasPermission("add_user")) {
@@ -502,6 +505,7 @@ class UsersController extends MainPageController {
 		return false;
 	}
 
+	*/
 
 
 
@@ -509,6 +513,8 @@ class UsersController extends MainPageController {
 	 * Reset a user's password 
 	 *	
 	 */
+	/*
+	// No longer a function
 	public function reset_password() {
 		smarty()->assign('title', 'Reset Password');
 		
@@ -559,7 +565,7 @@ class UsersController extends MainPageController {
 			}
 
 		}
-	}
+	}*/
 
 
 
