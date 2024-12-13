@@ -80,7 +80,12 @@ class MenuController extends DietaryController {
 	}
 
 
-	public function submit_edit() {
+	public function submit_edit()  {
+
+		//3 types of edits that need to be handled
+			//1. Regular edit, no changes have been made.		//MenuItem
+			//2. Edit location edit			//MenuMod
+			//3. Edit Corporate Edit		//MenuChange
 
 		if (!auth()->hasPermission('manage_menu')) {
 			session()->setFlash("You do not have permission to save this page.", 'error');
@@ -104,7 +109,7 @@ class MenuController extends DietaryController {
 		}
 
 		// if reset is not empty then delete the menu mod item
-		if (isset (input()->reset)) {
+		if (isset (input()->reset) ) {
 			if ($menuItem->delete()) {
 				session()->setFlash("The menu changes have been deleted and the menu has been reset to the original menu items.", 'success');
 				$this->redirect(array('module' => 'Dietary', 'page' => 'info', 'action' => 'current', 'location' => $location->public_id));
@@ -115,13 +120,13 @@ class MenuController extends DietaryController {
 		}
 
 
-		// get the original menu item
-		if (input()->menu_type == "MenuChange") {
-			$menuChange = true;
-			$origMenuItem = $this->loadModel('MenuChange', input()->public_id);
-		} else {
-			$menuChange = false;
+		// get the menu_item_id from origional if we need to.
+		if (input()->menu_type == "MenuItem") {
 			$origMenuItem = $this->loadModel('MenuItem', input()->public_id);
+			$menuItem->menu_item_id = $origMenuItem->id;
+		} else if(input()->menu_type == "MenuChange") {
+			$origMenuItem = $this->loadModel('MenuChange', input()->public_id);
+			$menuItem->menu_item_id = $origMenuItem->menu_item_id;
 		}
 
 
@@ -131,13 +136,6 @@ class MenuController extends DietaryController {
 			$this->redirect(input()->path);
 		} else {
 			$menuItem->reason = input()->reason;
-		}
-
-		// set the menu item id
-		if ($menuChange) {
-			$menuItem->menu_item_id = $origMenuItem->menu_item_id;
-		} else {
-			$menuItem->menu_item_id = $origMenuItem->id;
 		}
 
 		// set the location
@@ -159,8 +157,6 @@ class MenuController extends DietaryController {
 			session()->setFlash("Could not save the menu information. Please try again.", 'error');
 			$this->redirect(input()->path);
 		}
-
-
 	}
 
 
